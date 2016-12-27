@@ -1,6 +1,7 @@
 package org.sprintdragon.task.dispatch.scheduled;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.sprintdragon.task.dispatch.biz.taskinfo.service.TaskInfoExecuteService;
@@ -17,7 +18,7 @@ public class PopRedisScheduled {
     @Resource
     TaskInfoExecuteService taskInfoExecuteService;
 
-    //    @Async("popRedisExecutor")
+    @Async
     @Scheduled(fixedRate = 1000, initialDelay = 2000)
     public void popTaskFromRedisByScore() throws InterruptedException {
         try {
