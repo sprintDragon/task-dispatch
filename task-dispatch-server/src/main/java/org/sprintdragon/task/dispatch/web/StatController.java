@@ -12,7 +12,7 @@ import javax.annotation.Resource;
  * Created by wangdi on 16-12-19.
  */
 @RestController
-@RequestMapping("/man/stat")
+@RequestMapping("/stat")
 public class StatController {
 
     @Resource
