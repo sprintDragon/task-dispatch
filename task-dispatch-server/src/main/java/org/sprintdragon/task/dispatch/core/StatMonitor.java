@@ -16,7 +16,9 @@ import java.util.concurrent.atomic.AtomicLong;
 @Slf4j
 public class StatMonitor {
 
+    private static long publishOpm;
     private static long executeOpm;
+    public static AtomicLong publishCount = new AtomicLong();
     public static AtomicLong executeCount = new AtomicLong();
     public static AtomicLong executeErrorCount = new AtomicLong();
     @Resource
@@ -29,10 +31,12 @@ public class StatMonitor {
             @Override
             public void run() {
                 while (true) {
+                    long start = System.currentTimeMillis();
                     executeOpm = executeCount.getAndSet(0);
-                    log.info("StatMonitor running executeOpm={}", executeOpm);
+                    publishOpm = publishCount.getAndSet(0);
+                    log.info("StatMonitor running 每分钟生产数量={},每分钟处理数量={}", publishOpm, executeOpm);
                     try {
-                        Thread.sleep(60 * Timer.ONE_SECOND);
+                        Thread.sleep(60 * Timer.ONE_SECOND - (System.currentTimeMillis() - start));
                     } catch (InterruptedException e) {
                         log.error("StatMonitor thread error", e);
                     }

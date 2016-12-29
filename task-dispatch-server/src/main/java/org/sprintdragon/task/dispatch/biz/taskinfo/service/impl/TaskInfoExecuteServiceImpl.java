@@ -73,6 +73,7 @@ public class TaskInfoExecuteServiceImpl implements TaskInfoExecuteService {
 
     private void asyncExecute(String sysKeyStr) {
         log.debug("executeTaskInfo execute sysKeyStr={}", sysKeyStr);
+        StatMonitor.publishCount.incrementAndGet();
         disruptorFacade.getDisruptor().publishEvent(new TaskInfoEventTranslator(new TaskSysKey(sysKeyStr)));
     }
 

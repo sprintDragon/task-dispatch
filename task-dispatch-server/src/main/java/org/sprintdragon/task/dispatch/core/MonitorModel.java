@@ -11,6 +11,7 @@ import lombok.ToString;
 public class MonitorModel {
 
     private int bufferSize;
+    //环形缓冲剩余空间
     private long remainingCapacity;
 
     private long activeCount;
@@ -18,7 +19,9 @@ public class MonitorModel {
 
     //有序队列长度
     private long redisZsetSize;
-    //执行效率 opm
+    //每分钟生产数量
+    private long publishOpm;
+    //每分钟处理数量 opm
     private long executeOpm;
     private long executeError;
 
