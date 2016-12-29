@@ -14,7 +14,7 @@ import javax.management.timer.Timer;
  */
 @Component
 @Slf4j
-public class DbTimeoutScheduled {
+public class TaskResumeScheduled {
 
     @Resource
     TaskInfoExecuteService taskInfoExecuteService;

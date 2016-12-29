@@ -13,7 +13,7 @@ import javax.annotation.Resource;
  */
 @Component
 @Slf4j
-public class PopRedisScheduled {
+public class TaskExecuteScheduled {
 
     @Resource
     TaskInfoExecuteService taskInfoExecuteService;
