@@ -1,8 +1,8 @@
 package org.sprintdragon.task.dispatch.scheduled;
 
+import com.dangdang.ddframe.job.api.ShardingContext;
+import com.dangdang.ddframe.job.api.simple.SimpleJob;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.sprintdragon.task.dispatch.biz.taskinfo.service.TaskInfoExecuteService;
 
@@ -11,17 +11,17 @@ import javax.annotation.Resource;
 /**
  * Created by wangdi on 16-12-19.
  */
-@Component
+@Component("taskExecuteJob")
 @Slf4j
-public class TaskExecuteScheduled {
+public class TaskExecuteJob implements SimpleJob {
 
     @Resource
     TaskInfoExecuteService taskInfoExecuteService;
 
-    @Async
-    @Scheduled(fixedRate = 1000, initialDelay = 2000)
-    public void popTaskFromRedisByScore() throws InterruptedException {
+    @Override
+    public void execute(ShardingContext shardingContext) {
         try {
+            System.out.println("******name=" + shardingContext.getJobName() + ",shard=" + shardingContext.getShardingParameter() + "," + shardingContext.getShardingItem());
             long startTime = System.currentTimeMillis();
             log.debug("popTaskFromRedisByScore begin thread={}", Thread.currentThread().getName());
             long fetchNum = taskInfoExecuteService.batchPop();

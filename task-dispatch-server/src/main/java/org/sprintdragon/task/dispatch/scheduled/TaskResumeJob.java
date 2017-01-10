@@ -20,7 +20,7 @@ public class TaskResumeJob implements SimpleJob {
 
     @Override
     public void execute(ShardingContext shardingContext) {
-        System.out.println("******name=" + shardingContext.getShardingParameter() + "," + shardingContext.getShardingItem());
+        System.out.println("******name=" + shardingContext.getJobName() + ",shard=" + shardingContext.getShardingParameter() + "," + shardingContext.getShardingItem());
 //        try {
 //            long startTime = System.currentTimeMillis();
 //            log.info("resumeDbToRedis begin threadName={}", Thread.currentThread().getName());
