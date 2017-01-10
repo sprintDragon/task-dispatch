@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAdminServer
 @EnableScheduling
 @EnableAsync
-@ImportResource({"classpath:/META-INF.spring/spring-config*.xml"})
+@ImportResource({"classpath:/META-INF.spring/spring-config.xml"})
 public class DispatchApplication {
     public static void main(String[] args) {
         SpringApplication.run(DispatchApplication.class, args);

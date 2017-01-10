@@ -2,6 +2,8 @@ package org.sprintdragon.task.dispatch.web;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.curator.framework.CuratorFramework;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,9 +31,7 @@ public class ManController {
     TaskReceiveListener taskReceiveListener;
     static final int limit = 100000;
 
-    @RequestMapping(value = "/saveMore/{total}",
-            method = RequestMethod.GET
-    )
+    @RequestMapping(value = "/saveMore/{total}", method = RequestMethod.GET)
     public void saveMore(@PathVariable int total) {
         try {
             if (total >= limit) {
@@ -60,6 +60,14 @@ public class ManController {
         } catch (Exception e) {
             log.error("saveMore error", e);
         }
+    }
+
+    @Autowired
+    CuratorFramework client;
+
+    @RequestMapping(value = "/viewZk", method = RequestMethod.GET)
+    public void viewZk() {
+        client.getChildren();
     }
 
 }
