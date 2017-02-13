@@ -39,7 +39,7 @@ public class TaskInfoExecuteServiceImpl implements TaskInfoExecuteService {
     @Resource
     IDisruptorFacade disruptorFacade;
     //每次取出多少个
-    static final int FETCH_PER_TIME_COUNT = 1000;
+    static final int FETCH_PER_TIME_COUNT = 10000;
     //重试任务最迟一周内执行
     static final long LIMIT_TO_TIME = 30 * Timer.ONE_DAY;
     //恢复表中数据时间线
@@ -49,6 +49,9 @@ public class TaskInfoExecuteServiceImpl implements TaskInfoExecuteService {
     @Override
     public boolean execute(@Valid @NotNull TaskInfo taskInfo) throws Exception {
         try {
+            if (taskInfo == null) {
+                return true;
+            }
             long startTime = System.currentTimeMillis();
             ExecuteTypeEnum executeTypeEnum = ExecuteTypeEnum.getValue(taskInfo.getExecuteType());
             switch (executeTypeEnum) {

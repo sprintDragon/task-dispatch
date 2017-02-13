@@ -21,7 +21,7 @@ public class TaskExecuteJob implements SimpleJob {
     @Override
     public void execute(ShardingContext shardingContext) {
         try {
-            System.out.println("******name=" + shardingContext.getJobName() + ",shard=" + shardingContext.getShardingParameter() + "," + shardingContext.getShardingItem());
+//            System.out.println("******name=" + shardingContext.getJobName() + ",shard=" + shardingContext.getShardingParameter() + "," + shardingContext.getShardingItem());
             long startTime = System.currentTimeMillis();
             log.debug("popTaskFromRedisByScore begin thread={}", Thread.currentThread().getName());
             long fetchNum = taskInfoExecuteService.batchPop();

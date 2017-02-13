@@ -20,15 +20,15 @@ public class TaskResumeJob implements SimpleJob {
 
     @Override
     public void execute(ShardingContext shardingContext) {
-        System.out.println("******name=" + shardingContext.getJobName() + ",shard=" + shardingContext.getShardingParameter() + "," + shardingContext.getShardingItem());
-//        try {
-//            long startTime = System.currentTimeMillis();
-//            log.info("resumeDbToRedis begin threadName={}", Thread.currentThread().getName());
-//            long fetchNum = taskInfoExecuteService.resumeTimeout();
-//            log.info("resumeDbToRedis end threadName{},fetchNum={},cost={}", Thread.currentThread().getName(), fetchNum, System.currentTimeMillis() - startTime);
-//        } catch (Exception e) {
-//            log.error("resumeDbToRedis error", e);
-//        }
+//        System.out.println("******jobName=" + shardingContext.getJobName() + ",param=" + shardingContext.getJobParameter() + ",shard=" + shardingContext.getShardingParameter() + "," + shardingContext.getShardingItem());
+        try {
+            long startTime = System.currentTimeMillis();
+            log.debug("resumeDbToRedis begin threadName={}", Thread.currentThread().getName());
+            long fetchNum = taskInfoExecuteService.resumeTimeout();
+            log.debug("resumeDbToRedis end threadName{},fetchNum={},cost={}", Thread.currentThread().getName(), fetchNum, System.currentTimeMillis() - startTime);
+        } catch (Exception e) {
+            log.error("resumeDbToRedis error", e);
+        }
     }
 
 }

@@ -21,11 +21,15 @@ public class TaskInfoEventHandler implements WorkHandler<TaskSysKey> {
 
     @Override
     public void onEvent(TaskSysKey taskSysKey) throws Exception {
-        long startTime = System.currentTimeMillis();
-        TaskInfo taskInfo = taskInfoMysqlService.findOne(Long.valueOf(taskSysKey.getSysKey()));
-        if (taskInfoExecuteService.execute(taskInfo)) {
-            taskInfoMysqlService.deleteById(taskInfo.getSysKey());
+        try {
+            long startTime = System.currentTimeMillis();
+            TaskInfo taskInfo = taskInfoMysqlService.findOne(Long.valueOf(taskSysKey.getSysKey()));
+            if (taskInfoExecuteService.execute(taskInfo)) {
+                taskInfoMysqlService.deleteById(taskInfo.getSysKey());
+            }
+            log.debug("######onEvent thread={},cost={},taskSysKey={}", Thread.currentThread().getName(), System.currentTimeMillis() - startTime, taskSysKey.getSysKey());
+        } catch (Exception e) {
+            log.error("onEvent error taskSysKey={}", taskSysKey, e);
         }
-        log.debug("######onEvent thread={},cost={}", Thread.currentThread().getName(), System.currentTimeMillis() - startTime);
     }
 }
