@@ -1,0 +1,100 @@
+/*
+ * Copyright (C) 2010-2101 Alibaba Group Holding Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.sprintdragon.task.dispatch.shared.arbitrate.manage;
+
+import org.I0Itec.zkclient.exception.ZkNoNodeException;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.zookeeper.CreateMode;
+import org.sprintdragon.task.dispatch.shared.arbitrate.ArbitrateConstants;
+import org.sprintdragon.task.dispatch.shared.arbitrate.ArbitrateEvent;
+import org.sprintdragon.task.dispatch.shared.arbitrate.ArbitrateException;
+import org.sprintdragon.task.dispatch.shared.arbitrate.manage.helper.ManagePathUtils;
+import org.sprintdragon.task.dispatch.shared.arbitrate.zookeeper.ZooKeeperClient;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 机器node节点的相关信号
+ *
+ * @author jianghang 2011-8-31 下午07:26:02
+ */
+public class NodeArbitrateEvent implements ArbitrateEvent {
+
+    private CuratorFramework zookeeper = ZooKeeperClient.getClient();
+
+    /**
+     * 创建相应的node节点，说明：node节点的生命周期为EPHEMERAL
+     * <p>
+     * <pre>
+     * 1. 是个同步调用
+     * </pre>
+     */
+    public void init(Long nid) {
+        String path = ManagePathUtils.getNode(nid);
+
+        try {
+            zookeeper.create().withMode(CreateMode.EPHEMERAL).forPath(path, new byte[0]);// 创建为临时节点
+        } catch (Exception e) {
+            throw new ArbitrateException("Node_init", nid.toString(), e);
+        }
+    }
+
+    /**
+     * 销毁的node节点
+     * <p>
+     * <pre>
+     * 1. 是个同步调用
+     * </pre>
+     */
+    public void destory(Long nid) {
+        String path = ManagePathUtils.getNode(nid);
+
+        try {
+            zookeeper.delete().forPath(path); // 删除节点，不关心版本
+        } catch (ZkNoNodeException e) {
+            // 如果节点已经不存在，则不抛异常
+            // ignore
+        } catch (Exception e) {
+            throw new ArbitrateException("Node_destory", nid.toString(), e);
+        }
+    }
+
+    /**
+     * 获取当前存活的节点列表
+     */
+    public List<Long> liveNodes() {
+        String path = ArbitrateConstants.NODE_NID_ROOT;
+        try {
+            List<String> nids = zookeeper.getChildren().forPath(path);
+            List<Long> result = new ArrayList<Long>();
+            for (String nid : nids) {
+                result.add(Long.valueOf(nid));
+            }
+
+            return result;
+        } catch (Exception e) {
+            throw new ArbitrateException("liveNodes", e);
+        }
+    }
+
+    public static void main(String[] args) {
+        NodeArbitrateEvent event = new NodeArbitrateEvent();
+        System.out.println("##" + event.liveNodes());
+    }
+
+}

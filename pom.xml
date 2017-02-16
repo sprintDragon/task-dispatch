@@ -10,7 +10,10 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>task-dispatch-client</module>
-        <module>task-dispatch-server</module>
+        <module>task-dispatch-manager</module>
+        <module>task-dispatch-node</module>
+        <module>task-dispatch-shared</module>
+        <module>task-dispatch-assist</module>
     </modules>
 
     <properties>
