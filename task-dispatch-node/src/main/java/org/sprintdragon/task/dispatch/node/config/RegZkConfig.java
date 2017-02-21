@@ -1,8 +1,11 @@
 package org.sprintdragon.task.dispatch.node.config;
 
-import org.sprintdragon.task.dispatch.assist.arbitrate.manager.NodeArbitrateEvent;
-import org.sprintdragon.task.dispatch.assist.common.model.config.node.*;
 import org.springframework.stereotype.Component;
+import org.sprintdragon.task.dispatch.assist.arbitrate.manager.NodeArbitrateEvent;
+import org.sprintdragon.task.dispatch.assist.common.model.config.node.Node;
+import org.sprintdragon.task.dispatch.assist.common.model.config.node.NodeBuilder;
+import org.sprintdragon.task.dispatch.assist.common.model.config.node.NodeStatus;
+import org.sprintdragon.task.dispatch.assist.common.model.config.node.ServerInfo;
 import org.sprintdragon.task.dispatch.assist.common.utils.SystemIpUtil;
 
 import javax.annotation.PostConstruct;
@@ -26,6 +29,7 @@ public class RegZkConfig {
         Node n = new NodeBuilder().sysId(11l).name("test1").status(NodeStatus.NORMAL).serverInfo(serverInfo).build();
 
         nodeArbitrateEvent.init(n);
+        nodeArbitrateEvent.watch();
     }
 
 }

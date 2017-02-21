@@ -17,6 +17,7 @@
 package org.sprintdragon.task.dispatch.assist.arbitrate.manager;
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.java.Log;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -38,6 +39,7 @@ import java.util.List;
  *
  * @author jianghang 2011-8-31 下午07:26:02
  */
+@Log
 public class NodeArbitrateEvent implements ArbitrateEvent {
 
     private static CuratorFramework zookeeper;
@@ -63,13 +65,16 @@ public class NodeArbitrateEvent implements ArbitrateEvent {
         } catch (Exception e) {
             throw new ArbitrateException("Node_init", node.toString(), e);
         }
-        PathChildrenCache watcher = new PathChildrenCache(zookeeper, ManagePathUtils.getSysPath(node), true);
+    }
+
+    public void watch(){
+        PathChildrenCache watcher = new PathChildrenCache(zookeeper, ManagePathUtils.getNodeRoot(), true);
         watcher.getListenable().addListener((client, event) -> {
             ChildData data = event.getData();
             if (data == null) {
-                System.out.println("##############No data in event[" + event + "]");
+                log.info("##############No data in event[" + event + "]");
             } else {
-                System.out.println("################Receive event: "
+                log.info("################Receive event: "
                         + "type=[" + event.getType() + "]"
                         + ", path=[" + data.getPath() + "]"
                         + ", data=[" + new String(data.getData()) + "]"
@@ -81,8 +86,7 @@ public class NodeArbitrateEvent implements ArbitrateEvent {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("Register zk watcher successfully!");
-
+        log.info("Register zk watcher successfully!");
     }
 
     /**
@@ -117,11 +121,6 @@ public class NodeArbitrateEvent implements ArbitrateEvent {
         } catch (Exception e) {
             throw new ArbitrateException("liveNodes", e);
         }
-    }
-
-    public static void main(String[] args) {
-        NodeArbitrateEvent event = new NodeArbitrateEvent();
-        System.out.println("##" + event.liveNodes());
     }
 
 }
