@@ -61,7 +61,7 @@ public class NodeArbitrateEvent implements ArbitrateEvent {
     public void init(Node node) {
         String path = ManagePathUtils.getNidPath(node);
         try {
-            zookeeper.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path, JSON.toJSONString(node).getBytes());// 创建为临时节点
+            zookeeper.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path, JSON.toJSONString(node).getBytes());// 创建为临时节点
         } catch (Exception e) {
             throw new ArbitrateException("Node_init", node.toString(), e);
         }
