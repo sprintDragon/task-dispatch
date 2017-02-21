@@ -38,5 +38,6 @@ public interface ArbitrateConstants {
      */
     public String NODE_NID_FORMAT         = NODE_NID_ROOT + "/{0}/{1}";
 
+    public String NODE_SYS_FORMAT         = NODE_NID_ROOT + "/{0}";
 
 }

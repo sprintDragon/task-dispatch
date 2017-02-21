@@ -45,9 +45,13 @@ public class ManagePathUtils {
     /**
      * 返回对应的node path
      */
-    public static String getNode(Node node) {
+    public static String getNidPath(Node node) {
         // 根据nodeId构造path
         return MessageFormat.format(ArbitrateConstants.NODE_NID_FORMAT, String.valueOf(node.getSysId()), String.valueOf(node.getServerInfo().getIp()));
+    }
+
+    public static String getSysPath(Node node){
+        return MessageFormat.format(ArbitrateConstants.NODE_SYS_FORMAT, String.valueOf(node.getSysId()));
     }
 
 }

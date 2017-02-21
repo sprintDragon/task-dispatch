@@ -20,6 +20,8 @@ import com.alibaba.fastjson.JSON;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.cache.ChildData;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.sprintdragon.task.dispatch.assist.arbitrate.ArbitrateConstants;
@@ -55,12 +57,32 @@ public class NodeArbitrateEvent implements ArbitrateEvent {
      * </pre>
      */
     public void init(Node node) {
-        String path = ManagePathUtils.getNode(node);
+        String path = ManagePathUtils.getNidPath(node);
         try {
             zookeeper.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path, JSON.toJSONString(node).getBytes());// 创建为临时节点
         } catch (Exception e) {
             throw new ArbitrateException("Node_init", node.toString(), e);
         }
+        PathChildrenCache watcher = new PathChildrenCache(zookeeper, ManagePathUtils.getSysPath(node), true);
+        watcher.getListenable().addListener((client, event) -> {
+            ChildData data = event.getData();
+            if (data == null) {
+                System.out.println("##############No data in event[" + event + "]");
+            } else {
+                System.out.println("################Receive event: "
+                        + "type=[" + event.getType() + "]"
+                        + ", path=[" + data.getPath() + "]"
+                        + ", data=[" + new String(data.getData()) + "]"
+                        + ", stat=[" + data.getStat() + "]");
+            }
+        });
+        try {
+            watcher.start(PathChildrenCache.StartMode.BUILD_INITIAL_CACHE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Register zk watcher successfully!");
+
     }
 
     /**
@@ -71,7 +93,7 @@ public class NodeArbitrateEvent implements ArbitrateEvent {
      * </pre>
      */
     public void destory(Node node) {
-        String path = ManagePathUtils.getNode(node);
+        String path = ManagePathUtils.getNidPath(node);
         try {
             zookeeper.delete().forPath(path); // 删除节点，不关心版本
         } catch (Exception e) {
