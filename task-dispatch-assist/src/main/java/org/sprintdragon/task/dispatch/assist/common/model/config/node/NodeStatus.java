@@ -18,21 +18,33 @@ package org.sprintdragon.task.dispatch.assist.common.model.config.node;
 
 /**
  * Node节点的运行状态
- * 
+ *
  * @author jianghang
  */
 public enum NodeStatus {
 
-    /** 运行中 */
-    START,
-    /** 停止 */
-    STOP;
+    /**
+     * 正常
+     */
+    NORMAL,
+    /**
+     * 繁忙
+     */
+    BUSY,
+    /**
+     * 失效
+     */
+    FAIL;
 
-    public boolean isStart() {
-        return this.equals(NodeStatus.START);
+    public boolean isNormal() {
+        return this.equals(NodeStatus.NORMAL);
     }
 
-    public boolean isStop() {
-        return this.equals(NodeStatus.STOP);
+    public boolean isBusy() {
+        return this.equals(NodeStatus.BUSY);
+    }
+
+    public boolean isFail() {
+        return this.equals(NodeStatus.FAIL);
     }
 }

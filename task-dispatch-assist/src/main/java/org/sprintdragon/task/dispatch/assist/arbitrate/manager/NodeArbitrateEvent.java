@@ -16,6 +16,7 @@
 
 package org.sprintdragon.task.dispatch.assist.arbitrate.manager;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -25,6 +26,7 @@ import org.sprintdragon.task.dispatch.assist.arbitrate.ArbitrateConstants;
 import org.sprintdragon.task.dispatch.assist.arbitrate.ArbitrateEvent;
 import org.sprintdragon.task.dispatch.assist.arbitrate.ArbitrateException;
 import org.sprintdragon.task.dispatch.assist.arbitrate.manager.helper.ManagePathUtils;
+import org.sprintdragon.task.dispatch.assist.common.model.config.node.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +54,12 @@ public class NodeArbitrateEvent implements ArbitrateEvent {
      * 1. 是个同步调用
      * </pre>
      */
-    public void init(Long nid) {
-        String path = ManagePathUtils.getNode(nid);
-
+    public void init(Node node) {
+        String path = ManagePathUtils.getNode(node);
         try {
-            zookeeper.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path, new byte[0]);// 创建为临时节点
+            zookeeper.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path, JSON.toJSONString(node).getBytes());// 创建为临时节点
         } catch (Exception e) {
-            throw new ArbitrateException("Node_init", nid.toString(), e);
+            throw new ArbitrateException("Node_init", node.toString(), e);
         }
     }
 
@@ -69,13 +70,12 @@ public class NodeArbitrateEvent implements ArbitrateEvent {
      * 1. 是个同步调用
      * </pre>
      */
-    public void destory(Long nid) {
-        String path = ManagePathUtils.getNode(nid);
-
+    public void destory(Node node) {
+        String path = ManagePathUtils.getNode(node);
         try {
             zookeeper.delete().forPath(path); // 删除节点，不关心版本
         } catch (Exception e) {
-            throw new ArbitrateException("Node_destory", nid.toString(), e);
+            throw new ArbitrateException("Node_destory", node.getName(), e);
         }
     }
 

@@ -16,8 +16,8 @@
 
 package org.sprintdragon.task.dispatch.assist.arbitrate.manager.helper;
 
-import org.apache.commons.lang.StringUtils;
 import org.sprintdragon.task.dispatch.assist.arbitrate.ArbitrateConstants;
+import org.sprintdragon.task.dispatch.assist.common.model.config.node.Node;
 
 import java.text.MessageFormat;
 
@@ -45,17 +45,9 @@ public class ManagePathUtils {
     /**
      * 返回对应的node path
      */
-    public static String getNode(Long nodeId) {
+    public static String getNode(Node node) {
         // 根据nodeId构造path
-        return MessageFormat.format(ArbitrateConstants.NODE_NID_FORMAT, String.valueOf(nodeId));
-    }
-
-
-    /**
-     * 将processId转化为zookeeper中的node名称
-     */
-    public static String getProcessNode(Long processId) {
-        return StringUtils.leftPad(String.valueOf(processId.intValue()), 10, '0');
+        return MessageFormat.format(ArbitrateConstants.NODE_NID_FORMAT, String.valueOf(node.getSysId()), String.valueOf(node.getServerInfo().getIp()));
     }
 
 }

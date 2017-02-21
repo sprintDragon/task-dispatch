@@ -16,36 +16,34 @@
 
 package org.sprintdragon.task.dispatch.assist.common.model.config;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
 /**
  * @author jianghang 2011-10-21 下午04:08:37
  * @version 4.0.0
  */
-public class ConfigException extends NestableRuntimeException {
+public class ConfigException extends RuntimeException {
 
     private static final long serialVersionUID = -7288830284122672209L;
 
-    private String            errorCode;
-    private String            errorDesc;
+    private String errorCode;
+    private String errorDesc;
 
-    public ConfigException(String errorCode){
+    public ConfigException(String errorCode) {
         super(errorCode);
     }
 
-    public ConfigException(String errorCode, Throwable cause){
+    public ConfigException(String errorCode, Throwable cause) {
         super(errorCode, cause);
     }
 
-    public ConfigException(String errorCode, String errorDesc){
+    public ConfigException(String errorCode, String errorDesc) {
         super(errorCode + ":" + errorDesc);
     }
 
-    public ConfigException(String errorCode, String errorDesc, Throwable cause){
+    public ConfigException(String errorCode, String errorDesc, Throwable cause) {
         super(errorCode + ":" + errorDesc, cause);
     }
 
-    public ConfigException(Throwable cause){
+    public ConfigException(Throwable cause) {
         super(cause);
     }
 

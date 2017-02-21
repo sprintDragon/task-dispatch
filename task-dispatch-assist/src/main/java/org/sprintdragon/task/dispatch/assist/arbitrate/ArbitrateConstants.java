@@ -36,7 +36,7 @@ public interface ArbitrateConstants {
     /**
      * otter中node节点的format格式,接受nid做为参数
      */
-    public String NODE_NID_FORMAT         = NODE_NID_ROOT + "/{0}";
+    public String NODE_NID_FORMAT         = NODE_NID_ROOT + "/{0}/{1}";
 
 
 }
