@@ -18,7 +18,7 @@ package org.sprintdragon.task.dispatch.assist.arbitrate;
 
 /**
  * 仲裁器相关常量定义
- * 
+ *
  * @author jianghang
  */
 public interface ArbitrateConstants {
@@ -26,18 +26,18 @@ public interface ArbitrateConstants {
     /**
      * otter的根节点
      */
-    public String NODE_OTTER_ROOT         = "/taskdispatch";
+    String NODE_OTTER_ROOT = "/taskdispatch";
+
+    String SPLIT_PLACH_HOLDER = "-";
 
     /**
      * otter的node机器的根节点
      */
-    public String NODE_NID_ROOT           = NODE_OTTER_ROOT + "/node";
+    String NODE_NID_ROOT = NODE_OTTER_ROOT + "/node";
 
     /**
      * otter中node节点的format格式,接受nid做为参数
      */
-    public String NODE_NID_FORMAT         = NODE_NID_ROOT + "/{0}/{1}";
-
-    public String NODE_SYS_FORMAT         = NODE_NID_ROOT + "/{0}";
+    String NODE_NID_FORMAT = NODE_NID_ROOT + "/{0}" + SPLIT_PLACH_HOLDER + "{1}";
 
 }

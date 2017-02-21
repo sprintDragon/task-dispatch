@@ -15,4 +15,6 @@ public class ServerInfo {
     private Long port;                                   // 和manager对应的通讯端口
     private String description;                            // 详细描述
 
+    private String dbSource;                            //数据源
+
 }

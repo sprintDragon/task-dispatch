@@ -59,15 +59,14 @@ public class NodeArbitrateEvent implements ArbitrateEvent {
      * </pre>
      */
     public void init(Node node) {
-        String path = ManagePathUtils.getNidPath(node);
         try {
-            zookeeper.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(path, JSON.toJSONString(node).getBytes());// 创建为临时节点
+            zookeeper.create().creatingParentContainersIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(ManagePathUtils.getNidPath(node), JSON.toJSONString(node).getBytes());// 创建为临时节点
         } catch (Exception e) {
             throw new ArbitrateException("Node_init", node.toString(), e);
         }
     }
 
-    public void watch(){
+    public void watch() {
         PathChildrenCache watcher = new PathChildrenCache(zookeeper, ManagePathUtils.getNodeRoot(), true);
         watcher.getListenable().addListener((client, event) -> {
             ChildData data = event.getData();
@@ -79,6 +78,14 @@ public class NodeArbitrateEvent implements ArbitrateEvent {
                         + ", path=[" + data.getPath() + "]"
                         + ", data=[" + new String(data.getData()) + "]"
                         + ", stat=[" + data.getStat() + "]");
+                switch (event.getType()) {
+                    case CHILD_REMOVED:
+                        List<String> paths = zookeeper.getChildren().forPath(ManagePathUtils.getNodeRoot());
+                        Node node = JSON.parseObject(event.getData().toString(), Node.class);
+                        System.out.println("###" + ManagePathUtils.checkIfSysOff(paths, node.getSysId()));
+                        break;
+                    default:
+                }
             }
         });
         try {

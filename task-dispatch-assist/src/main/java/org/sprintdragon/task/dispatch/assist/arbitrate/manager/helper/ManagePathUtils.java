@@ -20,6 +20,7 @@ import org.sprintdragon.task.dispatch.assist.arbitrate.ArbitrateConstants;
 import org.sprintdragon.task.dispatch.assist.common.model.config.node.Node;
 
 import java.text.MessageFormat;
+import java.util.List;
 
 /**
  * 对应zookeeper path构建的helper类
@@ -50,8 +51,13 @@ public class ManagePathUtils {
         return MessageFormat.format(ArbitrateConstants.NODE_NID_FORMAT, String.valueOf(node.getSysId()), String.valueOf(node.getServerInfo().getIp()));
     }
 
-    public static String getSysPath(Node node){
-        return MessageFormat.format(ArbitrateConstants.NODE_SYS_FORMAT, String.valueOf(node.getSysId()));
+    public static boolean checkIfSysOff(List<String> paths, String sysId) {
+        for (String path : paths) {
+            if (path.split(ArbitrateConstants.SPLIT_PLACH_HOLDER)[0].equals(sysId)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

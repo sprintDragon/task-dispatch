@@ -7,14 +7,14 @@ import org.sprintdragon.task.dispatch.assist.common.model.config.autokeeper.Auto
  */
 public class NodeBuilder {
 
-    private Long sysId;                                     // 单元唯一标示id
+    private String sysId;                                     // 单元唯一标示id
     private String name;                                   // 单元名字
     private NodeStatus status;
 
     private AutoKeeperCluster zkCluster;
     private ServerInfo serverInfo;
 
-    public NodeBuilder sysId(Long sysId) {
+    public NodeBuilder sysId(String sysId) {
         this.sysId = sysId;
         return this;
     }

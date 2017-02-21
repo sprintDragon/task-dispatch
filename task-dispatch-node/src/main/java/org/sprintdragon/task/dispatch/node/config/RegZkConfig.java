@@ -26,7 +26,8 @@ public class RegZkConfig {
         serverInfo.setName("本机名1");
         serverInfo.setDescription("描述1");
         serverInfo.setIp(SystemIpUtil.getRealIp());
-        Node n = new NodeBuilder().sysId(11l).name("test1").status(NodeStatus.NORMAL).serverInfo(serverInfo).build();
+        serverInfo.setDbSource("db1");
+        Node n = new NodeBuilder().sysId("11").name("test1").status(NodeStatus.NORMAL).serverInfo(serverInfo).build();
 
         nodeArbitrateEvent.init(n);
         nodeArbitrateEvent.watch();
